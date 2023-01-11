@@ -26,13 +26,16 @@ void PlayScene::Draw()
 void PlayScene::Update()
 {
 	UpdateDisplayList();
+	glm::vec2 mousePosition = EventManager::Instance().GetMousePosition();
+	//std::cout << "x: " << mousePosition.x <<" y: " << mousePosition.y << std::endl;
+	// exact same as the above cout
+	//printf("x: %f y: %f\n", mousePosition.x, mousePosition.y);
 }
 
 void PlayScene::Clean()
 {
 	RemoveAllChildren();
 }
-
 
 void PlayScene::HandleEvents()
 {
@@ -87,11 +90,13 @@ void PlayScene::GetPlayerInput()
 		{
 			m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_LEFT);
 			m_playerFacingRight = false;
+			m_pPlayer->GetTransform()->position += glm::vec2(-10.0f, 0.0f);
 		}
 		else if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_D))
 		{
 			m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_RIGHT);
 			m_playerFacingRight = true;
+			m_pPlayer->GetTransform()->position += glm::vec2(10.0f, 0.0f);
 		}
 		else
 		{
@@ -192,10 +197,13 @@ void PlayScene::Start()
 	
 	// Plane Sprite
 	m_pPlaneSprite = new Plane();
+	m_pPlaneSprite->GetTransform()->position = glm::vec2(100.0f, 100.0f);
 	AddChild(m_pPlaneSprite);
+	//RemoveChild(m_pPlaneSprite);// <-- call this to stop an item from being displayed
 
 	// Player Sprite
 	m_pPlayer = new Player();
+	m_pPlayer->GetTransform()->position = glm::vec2(700.0f, 500.0f);
 	AddChild(m_pPlayer);
 	m_playerFacingRight = true;
 

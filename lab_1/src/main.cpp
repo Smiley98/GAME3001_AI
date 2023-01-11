@@ -28,7 +28,7 @@ int main(int argc, char* args[])
 	while (Game::Instance().IsRunning())
 	{
 		const auto frame_start = static_cast<float>(SDL_GetTicks());
-
+		
 		Game::Instance().HandleEvents();
 		Game::Instance().Update();
 		Game::Instance().Render();
