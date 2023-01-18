@@ -27,6 +27,12 @@ void PlayScene::Update()
 {
 	UpdateDisplayList();
 	glm::vec2 mousePosition = EventManager::Instance().GetMousePosition();
+	float distance = Util::Distance(m_pPlayer->GetTransform()->position, m_pPlaneSprite->GetTransform()->position);
+	if (distance < 100.0f)
+	{
+		Game::Instance().ChangeSceneState(SceneState::END);
+	}
+
 	//std::cout << "x: " << mousePosition.x <<" y: " << mousePosition.y << std::endl;
 	// exact same as the above cout
 	//printf("x: %f y: %f\n", mousePosition.x, mousePosition.y);
@@ -86,6 +92,8 @@ void PlayScene::GetPlayerInput()
 	case static_cast<int>(InputType::KEYBOARD_MOUSE):
 	{
 		// handle player movement with mouse and keyboard
+
+		// left-right
 		if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_A))
 		{
 			m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_LEFT);
@@ -98,6 +106,17 @@ void PlayScene::GetPlayerInput()
 			m_playerFacingRight = true;
 			m_pPlayer->GetTransform()->position += glm::vec2(10.0f, 0.0f);
 		}
+
+		// up-down
+		if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_W))
+		{
+			m_pPlayer->GetTransform()->position += glm::vec2(0.0f, -10.0f);
+		}
+		else if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_S))
+		{
+			m_pPlayer->GetTransform()->position += glm::vec2(0.0f, 10.0f);
+		}
+
 		else
 		{
 			if (m_playerFacingRight)
@@ -258,6 +277,8 @@ void PlayScene::Start()
 	ImGuiWindowFrame::Instance().SetGuiFunction([this] { GUI_Function(); });
 }
 
+#include <glm/gtc/type_ptr.hpp>
+
 void PlayScene::GUI_Function() 
 {
 	// Always open with a NewFrame
@@ -290,6 +311,19 @@ void PlayScene::GUI_Function()
 		std::cout << float3[2] << std::endl;
 		std::cout << "---------------------------\n";
 	}
+
+	// 1-D plane movement
+	//float x = 0.0f;
+	//ImGui::SliderFloat("Plane slider", &x, -1.0f, 1.0f);
+	//m_pPlaneSprite->GetTransform()->position += glm::vec2(x, 0.0f);
+
+	//glm::value_ptr treats a vector as an array so we don't have to declare an auxillary variable like below. The choice is yours!
+	glm::vec2 xy;
+	ImGui::SliderFloat2("Plane slider", glm::value_ptr(xy), -1.0f, 1.0);
+	 
+	//float xy[2] = { 0.0f, 0.0f };
+	//ImGui::SliderFloat2("Plane slider", xy, -1.0f, 1.0);
+	//m_pPlaneSprite->GetTransform()->position += glm::vec2(xy[0], xy[1]);
 	
 	ImGui::End();
 }
