@@ -163,6 +163,23 @@ void PlayScene::GUI_Function()
 		m_pTarget->GetTransform()->position = targetPosition;
 	}
 
+	static glm::vec2 targetVelocity;
+	if (ImGui::SliderFloat2("Target Velocity", glm::value_ptr(targetVelocity), -5.0f, 5.0f))
+	{
+		m_pTarget->GetRigidBody()->velocity = targetVelocity;
+	}
+
+	if (ImGui::Button("Target Reset"))
+	{
+		// Reset target object
+		m_pTarget->GetTransform()->position = glm::vec2(100.0f, 100.0f);
+		m_pTarget->GetRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
+
+		// Reset target sliders
+		targetPosition = m_pTarget->GetTransform()->position;
+		targetVelocity = m_pTarget->GetRigidBody()->velocity;
+	}
+
 	//ImGui::Text("Player Input");
 	//ImGui::RadioButton("Keyboard / Mouse", &m_pCurrentInputType, static_cast<int>(InputType::KEYBOARD_MOUSE)); ImGui::SameLine();
 	//ImGui::RadioButton("Game Controller", &m_pCurrentInputType, static_cast<int>(InputType::GAME_CONTROLLER)); ImGui::SameLine();
