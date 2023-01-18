@@ -16,16 +16,19 @@ Ship::Ship() : m_maxSpeed(10.0f)
 	GetRigidBody()->velocity = glm::vec2(0.0f, 0.0f);
 	GetRigidBody()->acceleration = glm::vec2(0.0f, 0.0f);
 	GetRigidBody()->isColliding = false;
-	SetType(GameObjectType::AGENT);
+	SetType(GameObjectType::SHIP);
 
 	SetCurrentHeading(0.0f);// current facing angle
-	SetCurrentDirection(glm::vec2(1.0f, 0.0f)); // facing right
+	ChangeDirection();
+
+	// Makes more sense to always derive our direction from our angle
+	// (an angle of 0 is not the same as a direction of [1, 0])
+	//SetCurrentDirection(glm::vec2(1.0f, 0.0f)); // facing right
 	m_turnRate = 5.0f; // 5 degrees per frame
 
 	SetLOSDistance(400.0f); // 5 ppf x 80 feet
 	SetLOSColour(glm::vec4(1, 0, 0, 1));
 }
-
 
 Ship::~Ship()
 = default;
@@ -38,7 +41,6 @@ void Ship::Draw()
 	// draw LOS
 	Util::DrawLine(GetTransform()->position, GetTransform()->position + GetCurrentDirection() * GetLOSDistance(), GetLOSColour());
 }
-
 
 void Ship::Update()
 {
@@ -96,7 +98,6 @@ void Ship::SetMaxSpeed(const float new_speed)
 
 void Ship::CheckBounds()
 {
-
 	if (GetTransform()->position.x > Config::SCREEN_WIDTH)
 	{
 		GetTransform()->position = glm::vec2(0.0f, GetTransform()->position.y);
@@ -116,7 +117,6 @@ void Ship::CheckBounds()
 	{
 		GetTransform()->position = glm::vec2(GetTransform()->position.x, 600.0f);
 	}
-
 }
 
 void Ship::Reset()
@@ -126,5 +126,6 @@ void Ship::Reset()
 	const auto x_component = rand() % (640 - GetWidth()) + half_width + 1;
 	const auto y_component = -GetHeight();
 	GetTransform()->position = glm::vec2(x_component, y_component);
+	//GetRigidBody()->velocity = glm::vec2(x_component, y_component);
+	// Randomize velocity at your own risk!
 }
-

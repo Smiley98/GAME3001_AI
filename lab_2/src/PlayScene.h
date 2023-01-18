@@ -8,6 +8,7 @@
 //#include "Button.h"
 //#include "Label.h"
 #include "Target.h"
+#include "ship.h"
 
 class PlayScene : public Scene
 {
@@ -29,6 +30,7 @@ private:
 	glm::vec2 m_mousePosition;
 
 	Target* m_pTarget;
+	Ship* m_pShip;
 
 	//Plane* m_pPlaneSprite{};
 	//Player* m_pPlayer{};

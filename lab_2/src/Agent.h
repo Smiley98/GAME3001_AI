@@ -32,8 +32,8 @@ public:
 	void SetCurrentHeading(float heading);
 	void SetLOSColour(glm::vec4 colour);
 
-private:
 	void ChangeDirection();
+private:
 	float m_currentHeading;
 	glm::vec2 m_currentDirection;
 	glm::vec2 m_targetPosition;

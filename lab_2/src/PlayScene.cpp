@@ -29,6 +29,8 @@ void PlayScene::Draw()
 void PlayScene::Update()
 {
 	UpdateDisplayList();
+	m_pTarget->Update();
+	m_pShip->Update();
 }
 
 void PlayScene::Clean()
@@ -97,6 +99,10 @@ void PlayScene::Start()
 	// Target Object
 	m_pTarget = new Target();
 	AddChild(m_pTarget);
+
+	// Ship Object
+	m_pShip = new Ship();
+	AddChild(m_pShip);
 
 	// Back Button
 	//m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", GameObjectType::BACK_BUTTON);
