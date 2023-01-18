@@ -7,6 +7,7 @@
 //#include "Player.h"
 //#include "Button.h"
 //#include "Label.h"
+#include "Target.h"
 
 class PlayScene : public Scene
 {
@@ -26,6 +27,8 @@ private:
 	std::string m_guiTitle;
 	
 	glm::vec2 m_mousePosition;
+
+	Target* m_pTarget;
 
 	//Plane* m_pPlaneSprite{};
 	//Player* m_pPlayer{};

@@ -9,6 +9,9 @@
 #include "Renderer.h"
 #include "Util.h"
 
+// Gives us glm::vecn::value_ptr() to speed-track imgui arrays
+#include <glm/gtc/type_ptr.hpp>
+
 PlayScene::PlayScene()
 {
 	PlayScene::Start();
@@ -91,6 +94,10 @@ void PlayScene::Start()
 	//AddChild(m_pPlayer);
 	//m_playerFacingRight = true;
 
+	// Target Object
+	m_pTarget = new Target();
+	AddChild(m_pTarget);
+
 	// Back Button
 	//m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", GameObjectType::BACK_BUTTON);
 	//m_pBackButton->GetTransform()->position = glm::vec2(300.0f, 400.0f);
@@ -150,6 +157,12 @@ void PlayScene::GUI_Function()
 	
 	ImGui::Begin("Debug View", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoMove);
 	
+	static glm::vec2 targetPosition;
+	if (ImGui::SliderFloat2("Target Position", glm::value_ptr(targetPosition), 0.0f, 500.0f))
+	{
+		m_pTarget->GetTransform()->position = targetPosition;
+	}
+
 	//ImGui::Text("Player Input");
 	//ImGui::RadioButton("Keyboard / Mouse", &m_pCurrentInputType, static_cast<int>(InputType::KEYBOARD_MOUSE)); ImGui::SameLine();
 	//ImGui::RadioButton("Game Controller", &m_pCurrentInputType, static_cast<int>(InputType::GAME_CONTROLLER)); ImGui::SameLine();
