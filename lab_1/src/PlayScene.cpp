@@ -19,6 +19,24 @@ PlayScene::~PlayScene()
 
 void PlayScene::Draw()
 {
+	TextureManager::Instance().Load("../Assets/textures/nebula.png", "bg");
+	TextureManager& tm = TextureManager::Instance();
+	static glm::vec2 size = tm.GetTextureSize("bg");
+
+	static float scrollSpeed = 5.0f;
+	static float scrollPosition1 = 0.0f;
+	static float scrollPosition2 = -size.x;
+
+	if (scrollPosition1 >= size.x)
+		scrollPosition1 = -size.x;
+	if (scrollPosition2 >= size.x)
+		scrollPosition2 = -size.x;
+	scrollPosition1 += scrollSpeed;
+	scrollPosition2 += scrollSpeed;
+
+	TextureManager::Instance().Draw("bg", scrollPosition1, 0);
+	TextureManager::Instance().Draw("bg", scrollPosition2, 0);
+
 	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }
@@ -56,43 +74,8 @@ void PlayScene::GetPlayerInput()
 {
 	switch (m_pCurrentInputType)
 	{
-	case static_cast<int>(InputType::GAME_CONTROLLER):
-	{
-		// handle player movement with GameController
-		if (SDL_NumJoysticks() > 0)
-		{
-			if (EventManager::Instance().GetGameController(0) != nullptr)
-			{
-				constexpr auto dead_zone = 10000;
-				if (EventManager::Instance().GetGameController(0)->STICK_LEFT_HORIZONTAL > dead_zone)
-				{
-					m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_RIGHT);
-					m_playerFacingRight = true;
-				}
-				else if (EventManager::Instance().GetGameController(0)->STICK_LEFT_HORIZONTAL < -dead_zone)
-				{
-					m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_LEFT);
-					m_playerFacingRight = false;
-				}
-				else
-				{
-					if (m_playerFacingRight)
-					{
-						m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_RIGHT);
-					}
-					else
-					{
-						m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_LEFT);
-					}
-				}
-			}
-		}
-	}
-	break;
 	case static_cast<int>(InputType::KEYBOARD_MOUSE):
 	{
-		// handle player movement with mouse and keyboard
-
 		// left-right
 		if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_A))
 		{
@@ -106,6 +89,11 @@ void PlayScene::GetPlayerInput()
 			m_playerFacingRight = true;
 			m_pPlayer->GetTransform()->position += glm::vec2(10.0f, 0.0f);
 		}
+		else
+		{
+			m_pPlayer->SetAnimationState(m_playerFacingRight ?
+				PlayerAnimationState::PLAYER_IDLE_RIGHT : PlayerAnimationState::PLAYER_IDLE_LEFT);
+		}
 
 		// up-down
 		if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_W))
@@ -115,73 +103,6 @@ void PlayScene::GetPlayerInput()
 		else if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_S))
 		{
 			m_pPlayer->GetTransform()->position += glm::vec2(0.0f, 10.0f);
-		}
-
-		else
-		{
-			if (m_playerFacingRight)
-			{
-				m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_RIGHT);
-			}
-			else
-			{
-				m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_LEFT);
-			}
-		}
-	}
-	break;
-	case static_cast<int>(InputType::ALL):
-	{
-		if (SDL_NumJoysticks() > 0)
-		{
-			if (EventManager::Instance().GetGameController(0) != nullptr)
-			{
-				constexpr auto dead_zone = 10000;
-				if (EventManager::Instance().GetGameController(0)->STICK_LEFT_HORIZONTAL > dead_zone
-					|| EventManager::Instance().IsKeyDown(SDL_SCANCODE_D))
-				{
-					m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_RIGHT);
-					m_playerFacingRight = true;
-				}
-				else if (EventManager::Instance().GetGameController(0)->STICK_LEFT_HORIZONTAL < -dead_zone
-					|| EventManager::Instance().IsKeyDown(SDL_SCANCODE_A))
-				{
-					m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_LEFT);
-					m_playerFacingRight = false;
-				}
-				else
-				{
-					if (m_playerFacingRight)
-					{
-						m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_RIGHT);
-					}
-					else
-					{
-						m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_LEFT);
-					}
-				}
-			}
-		}
-		else if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_A))
-		{
-			m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_LEFT);
-			m_playerFacingRight = false;
-		}
-		else if (EventManager::Instance().IsKeyDown(SDL_SCANCODE_D))
-		{
-			m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_RUN_RIGHT);
-			m_playerFacingRight = true;
-		}
-		else
-		{
-			if (m_playerFacingRight)
-			{
-				m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_RIGHT);
-			}
-			else
-			{
-				m_pPlayer->SetAnimationState(PlayerAnimationState::PLAYER_IDLE_LEFT);
-			}
 		}
 	}
 	break;

@@ -28,16 +28,20 @@ void PlayScene::Draw()
 
 void PlayScene::Update()
 {
+	m_mousePosition.x;
+
 	UpdateDisplayList();
 	m_pTarget->Update();
 	m_pShip->Update();
+	(*m_pShip).Update();
+	// " -> " is the same as *(object).
+	// It just exists for convenience cause typing asterisk in parenthesis is verbose.
 }
 
 void PlayScene::Clean()
 {
 	RemoveAllChildren();
 }
-
 
 void PlayScene::HandleEvents()
 {
