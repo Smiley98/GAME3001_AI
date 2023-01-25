@@ -3,10 +3,6 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-//#include "Plane.h"
-//#include "Player.h"
-//#include "Button.h"
-//#include "Label.h"
 #include "Target.h"
 #include "ship.h"
 
@@ -31,15 +27,6 @@ private:
 
 	Target* m_pTarget;
 	Ship* m_pShip;
-
-	//Plane* m_pPlaneSprite{};
-	//Player* m_pPlayer{};
-	//bool m_playerFacingRight{};
-
-	// UI Items
-	//Button* m_pBackButton{};
-	//Button* m_pNextButton{};
-	//Label* m_pInstructionsLabel{};
 
 	// Input Control
 	int m_pCurrentInputType{};
