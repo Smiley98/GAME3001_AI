@@ -52,6 +52,11 @@ void PlayScene::Update()
 
 	m_pShip->SetTargetPosition(m_pTarget->GetTransform()->position);
 	m_pShip->Update();
+
+	if (CollisionManager::AABBCheck(m_pShip, m_pTarget))
+	{
+		m_pShip->GetTransform()->position = glm::vec2(400.0f, 300.0f);
+	}
 }
 
 void PlayScene::Clean()
@@ -115,6 +120,9 @@ void PlayScene::Start()
 	m_pShip = new Ship();
 	AddChild(m_pShip);
 
+	// TODO -- Load a sound with id "yay" to play automatically on-collision!
+	//SoundManager::Instance().Load(*path to audio file, see TextureManager and constructors for reference*)
+
 	/* DO NOT REMOVE */
 	ImGuiWindowFrame::Instance().SetGuiFunction([this] { GUI_Function(); });
 }
@@ -157,6 +165,18 @@ void PlayScene::GUI_Function()
 		// Reset target sliders
 		targetPosition = m_pTarget->GetTransform()->position;
 		targetVelocity = m_pTarget->GetRigidBody()->velocity;
+	}
+
+	static float steeringForce = 500.0f;
+	if (ImGui::SliderFloat("Steering force", &steeringForce, 0.0f, 1000.0f))
+	{
+		m_pShip->SetMaxSpeed(steeringForce);
+	}
+
+	static bool enabled = true;
+	if (ImGui::Checkbox("Toggle Ship", &enabled))
+	{
+		m_pShip->SetEnabled(enabled);
 	}
 	
 	ImGui::End();

@@ -5,7 +5,7 @@
 #include "Steering.h"
 #include "Game.h"
 
-Ship::Ship() : m_maxSpeed(10.0f)
+Ship::Ship() : m_maxSpeed(500.0f)
 {
 	TextureManager::Instance().Load("../Assets/textures/ship3.png", "ship");
 
@@ -46,7 +46,7 @@ void Ship::Draw()
 void Ship::Update()
 {
 	GetRigidBody()->acceleration =
-		Seek(GetTargetPosition(), GetTransform()->position, GetRigidBody()->velocity, 500.0f);
+		Seek(GetTargetPosition(), GetTransform()->position, GetRigidBody()->velocity, m_maxSpeed);
 
 	Move();
 	CheckBounds();
