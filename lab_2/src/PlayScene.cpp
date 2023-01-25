@@ -22,6 +22,25 @@ PlayScene::~PlayScene()
 
 void PlayScene::Draw()
 {
+	// I will explain this if there's time, otherwise you can find it in the commits tab :)
+	//TextureManager::Instance().Load("../Assets/textures/nebula.png", "bg");
+	//TextureManager& tm = TextureManager::Instance();
+	//static glm::vec2 size = tm.GetTextureSize("bg");
+	//
+	//static float scrollSpeed = 5.0f;
+	//static float scrollPosition1 = 0.0f;
+	//static float scrollPosition2 = -size.x;
+	//
+	//if (scrollPosition1 >= size.x)
+	//	scrollPosition1 = -size.x;
+	//if (scrollPosition2 >= size.x)
+	//	scrollPosition2 = -size.x;
+	//scrollPosition1 += scrollSpeed;
+	//scrollPosition2 += scrollSpeed;
+	//
+	//TextureManager::Instance().Draw("bg", scrollPosition1, 0);
+	//TextureManager::Instance().Draw("bg", scrollPosition2, 0);
+
 	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }
@@ -30,6 +49,8 @@ void PlayScene::Update()
 {
 	UpdateDisplayList();
 	m_pTarget->Update();
+
+	m_pShip->SetTargetPosition(m_pTarget->GetTransform()->position);
 	m_pShip->Update();
 }
 

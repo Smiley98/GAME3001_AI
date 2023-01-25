@@ -4,7 +4,7 @@
 
 Target::Target()
 {
-	TextureManager::Instance().Load("../Assets/textures/Circle.png","circle");
+	TextureManager::Instance().Load("../Assets/textures/Circle.png", "circle");
 
 	const auto size = TextureManager::Instance().GetTextureSize("circle");
 	SetWidth(static_cast<int>(size.x));

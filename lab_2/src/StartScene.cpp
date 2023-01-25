@@ -55,9 +55,9 @@ void StartScene::Start()
 	AddChild(m_pInstructionsLabel);
 
 
-	m_pShip = new Ship();
-	m_pShip->GetTransform()->position = glm::vec2(400.0f, 300.0f); 
-	AddChild(m_pShip); 
+	//m_pShip = new Ship();
+	//m_pShip->GetTransform()->position = glm::vec2(400.0f, 300.0f); 
+	//AddChild(m_pShip); 
 
 	// Start Button
 	m_pStartButton = new Button();

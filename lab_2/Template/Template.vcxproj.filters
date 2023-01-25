@@ -290,6 +290,9 @@
     <ClInclude Include="..\src\InputType.h">
       <Filter>Enums</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Steering.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

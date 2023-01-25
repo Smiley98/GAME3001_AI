@@ -2,7 +2,8 @@
 #include "glm/gtx/string_cast.hpp"
 #include "PlayScene.h"
 #include "TextureManager.h"
-#include "Util.h"
+#include "Steering.h"
+#include "Game.h"
 
 Ship::Ship() : m_maxSpeed(10.0f)
 {
@@ -44,8 +45,11 @@ void Ship::Draw()
 
 void Ship::Update()
 {
-	/*move();
-	m_checkBounds();*/
+	GetRigidBody()->acceleration =
+		Seek(GetTargetPosition(), GetTransform()->position, GetRigidBody()->velocity, 500.0f);
+
+	Move();
+	CheckBounds();
 }
 
 void Ship::Clean()
@@ -80,10 +84,22 @@ void Ship::MoveBack()
 	GetRigidBody()->velocity = GetCurrentDirection() * -m_maxSpeed;
 }
 
+// "Semi-implicit Euler integration" -- cheapest energy-conserving system
+// v2 = v1 + a(t)
+// p2 = p1 + v2(t) + 0.5a(t^2)
 void Ship::Move()
 {
-	GetTransform()->position += GetRigidBody()->velocity;
-	GetRigidBody()->velocity *= 0.9f;
+	float dt = Game::Instance().GetDeltaTime();
+
+	// Step 1 -- Update velocity based on acceleration
+	GetRigidBody()->velocity = GetRigidBody()->velocity + GetRigidBody()->acceleration * dt;
+
+	// Step 2 -- Update position based on velocity (and a bit of acceleration)
+	GetTransform()->position = GetTransform()->position + GetRigidBody()->velocity * dt +
+		GetRigidBody()->acceleration * dt * dt;
+
+	// "Dampen" velocity if you want "friction"
+	//GetRigidBody()->velocity *= 0.9f;
 }
 
 float Ship::GetMaxSpeed() const
