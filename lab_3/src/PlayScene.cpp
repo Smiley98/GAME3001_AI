@@ -49,11 +49,6 @@ void PlayScene::Update()
 	//	SoundManager::Instance().PlaySound("boom");
 	//}
 
-	if (CollisionManager::LineAABBCheck(m_pStarShip, m_pObstacle))
-	{
-		SoundManager::Instance().PlaySound("boom");
-	}
-
 	if(m_pStarShip->IsEnabled())
 	{
 		CollisionManager::CircleAABBCheck(m_pTarget, m_pStarShip);
@@ -106,7 +101,8 @@ void PlayScene::Start()
 	m_pStarShip->SetTargetPosition(m_pTarget->GetTransform()->position);
 	m_pStarShip->SetCurrentDirection(glm::vec2(1.0f, 0.0f)); // facing right
 	m_pStarShip->SetEnabled(false);
-	m_pStarShip->SetLOSDistance(100.0f);
+	m_pStarShip->SetLOSDistance(200.0f);
+	m_pStarShip->pObstacle = m_pObstacle;
 	AddChild(m_pStarShip);
 
 	// Preload Sounds

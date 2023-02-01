@@ -32,6 +32,8 @@ public:
 	void Seek();
 	void LookWhereYoureGoing(glm::vec2 target_direction);
 
+	GameObject* pObstacle;
+
 private:
 	// private movement variables
 	float m_maxSpeed;

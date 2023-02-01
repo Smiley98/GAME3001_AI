@@ -103,8 +103,12 @@ void StarShip::LookWhereYoureGoing(const glm::vec2 target_direction)
 {
 	const float target_rotation = Util::SignedAngle(GetCurrentDirection(), target_direction);
 	const float turn_sensitivity = 25.0f;
-	
-	if(abs(target_rotation) > turn_sensitivity)
+
+	if (CollisionManager::LineAABBCheck(this, pObstacle))
+	{
+		SetCurrentHeading(GetCurrentHeading() + GetTurnRate());
+	}
+	else if(abs(target_rotation) > turn_sensitivity)
 	{
 		if(target_rotation > 0.0f)
 		{
@@ -121,7 +125,7 @@ void StarShip::LookWhereYoureGoing(const glm::vec2 target_direction)
 
 void StarShip::m_move()
 {
-	//Seek();
+	Seek();
 
 	// maybe a switch - case
 
