@@ -100,6 +100,9 @@ void Ship::Move()
 
 	// "Dampen" velocity if you want "friction"
 	//GetRigidBody()->velocity *= 0.9f;
+
+	glm::vec2 direction = Util::Normalize(GetRigidBody()->velocity);
+	SetCurrentHeading(atan2(direction.y, direction.x) * Util::Rad2Deg);
 }
 
 float Ship::GetMaxSpeed() const

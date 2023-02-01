@@ -121,7 +121,7 @@ void PlayScene::Start()
 	AddChild(m_pShip);
 
 	// TODO -- Load a sound with id "yay" to play automatically on-collision!
-	//SoundManager::Instance().Load(*path to audio file, see TextureManager and constructors for reference*)
+	SoundManager::Instance().Load("../Assets/audio/yay.ogg", "yay", SoundType::SOUND_SFX);
 
 	/* DO NOT REMOVE */
 	ImGuiWindowFrame::Instance().SetGuiFunction([this] { GUI_Function(); });
