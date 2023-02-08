@@ -34,6 +34,8 @@ void PlayScene::Draw()
 		}
 	}
 
+	m_Map.Render();
+
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }
 

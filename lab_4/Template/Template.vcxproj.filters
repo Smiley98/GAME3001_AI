@@ -31,6 +31,9 @@
     <Filter Include="DOCS">
       <UniqueIdentifier>{a44d29c3-2835-4901-a310-0039121b84b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pathing">
+      <UniqueIdentifier>{5080ce96-3f3e-4120-95c0-7fec9fa320a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\StartScene.cpp">
@@ -141,6 +144,7 @@
     <ClCompile Include="..\src\StarShip.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -302,6 +306,7 @@
     <ClInclude Include="..\src\TileStatus.h">
       <Filter>Enums</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\TileMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

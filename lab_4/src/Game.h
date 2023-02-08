@@ -57,6 +57,9 @@ public:
 
 	[[nodiscard]] SDL_Window* GetWindow() const;
 
+	int width;
+	int height;
+
 private:
 	Game();
 	~Game();
