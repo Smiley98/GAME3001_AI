@@ -101,12 +101,30 @@ void StarShip::Seek()
 
 void StarShip::LookWhereYoureGoing(const glm::vec2 target_direction)
 {
+	// 1. Try obstacle avoidance with left and right raycasts
+	// 2. If no obstacles, steer towards target based on turn rate 
 	const float target_rotation = Util::SignedAngle(GetCurrentDirection(), target_direction);
 	const float turn_sensitivity = 25.0f;
 
-	if (CollisionManager::LineAABBCheck(this, pObstacle))
+	float box_width = pObstacle->GetWidth();
+	float half_box_width = box_width * 0.5f;
+	float box_height = pObstacle->GetHeight();
+	float half_box_height = box_height * 0.5f;
+	glm::vec2 box_start = pObstacle->GetTransform()->position - glm::vec2(half_box_width, half_box_height);
+
+	glm::vec2 left_line_start = this->GetTransform()->position;
+	glm::vec2 left_line_end = this->GetTransform()->position + Util::Direction(this->GetCurrentHeading() - 15.0f) * this->GetLOSDistance();
+
+	glm::vec2 right_line_start = this->GetTransform()->position;
+	glm::vec2 right_line_end = this->GetTransform()->position + Util::Direction(this->GetCurrentHeading() + 15.0f) * this->GetLOSDistance();
+	
+	if (CollisionManager::LineRectCheck(left_line_start, left_line_end, box_start, box_width, box_height))
 	{
 		SetCurrentHeading(GetCurrentHeading() + GetTurnRate());
+	}
+	else if (CollisionManager::LineRectCheck(right_line_start, right_line_end, box_start, box_width, box_height))
+	{
+		SetCurrentHeading(GetCurrentHeading() - GetTurnRate());
 	}
 	else if(abs(target_rotation) > turn_sensitivity)
 	{

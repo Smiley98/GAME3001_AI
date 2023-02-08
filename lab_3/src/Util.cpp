@@ -265,6 +265,13 @@ glm::vec2 Util::Normalize(const glm::vec2 vec)
 	return dest;
 }
 
+glm::vec2 Util::Direction(float degrees)
+{
+	float x = cos(degrees * Util::Deg2Rad);
+	float y = sin(degrees * Util::Deg2Rad);
+	return { x, y };
+}
+
 /**
 * Returns the angle in degrees between from and to.
 */

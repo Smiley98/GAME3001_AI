@@ -34,8 +34,16 @@ void PlayScene::Draw()
 		}
 	}
 
+	// Previous solution -- single raycast directly ahead
+	//Util::DrawLine(m_pStarShip->GetTransform()->position,
+	//	m_pStarShip->GetTransform()->position + m_pStarShip->GetCurrentDirection() * m_pStarShip->GetLOSDistance());
+
+	// Updated solution - double raycast to each size
 	Util::DrawLine(m_pStarShip->GetTransform()->position,
-		m_pStarShip->GetTransform()->position + m_pStarShip->GetCurrentDirection() * m_pStarShip->GetLOSDistance());
+		m_pStarShip->GetTransform()->position + Util::Direction(m_pStarShip->GetCurrentHeading() - 15.0f) * m_pStarShip->GetLOSDistance());
+
+	Util::DrawLine(m_pStarShip->GetTransform()->position,
+		m_pStarShip->GetTransform()->position + Util::Direction(m_pStarShip->GetCurrentHeading() + 15.0f) * m_pStarShip->GetLOSDistance());
 
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }

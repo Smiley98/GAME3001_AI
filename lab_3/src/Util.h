@@ -47,6 +47,7 @@ public:
 	static glm::vec2 Negate(glm::vec2 vec);
 	static glm::vec2 Inverse(glm::vec2 vec);
 	static glm::vec2 Normalize(glm::vec2 vec);
+	static glm::vec2 Direction(float degrees);
 	static float Angle(glm::vec2 from, glm::vec2 to);
 	static float Dot(glm::vec2 lhs, glm::vec2 rhs);
 	static float SignedAngle(glm::vec2 from, glm::vec2 to);
