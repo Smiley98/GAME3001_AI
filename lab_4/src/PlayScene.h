@@ -24,15 +24,11 @@ private:
 	void GUI_Function();
 	std::string m_guiTitle;
 	glm::vec2 m_mousePosition;
+	TileMap m_Map;
 
 	// Game Objects for the Scene
 	Target* m_pTarget;
 	StarShip* m_pStarShip;
-	
-	TileMap m_Map;
-
-	// Debugging Variables
-	bool m_bDebugView;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

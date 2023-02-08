@@ -6,7 +6,7 @@
 
 StarShip::StarShip()
 {
-	TextureManager::Instance().Load("../Assets/textures/ncl.png", "starship");
+	TextureManager::Instance().Load("../Assets/textures/ncl_small.png", "starship");
 
 	const auto size = TextureManager::Instance().GetTextureSize("starship");
 	SetWidth(static_cast<int>(size.x));

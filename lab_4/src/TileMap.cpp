@@ -2,6 +2,20 @@
 #include "Game.h"
 #include "Util.h"
 
+Cell TileMap::GridPosition(glm::vec2 pixelPosition)
+{
+	const int tileWidth = Game::Instance().width / GRID_SIZE;
+	const int tileHeight = Game::Instance().height / GRID_SIZE;
+	return { (int)pixelPosition.x / tileWidth, (int)pixelPosition.y / tileHeight };
+}
+
+glm::vec2 TileMap::PixelPosition(Cell gridPosition)
+{
+	const int tileWidth = Game::Instance().width / GRID_SIZE;
+	const int tileHeight = Game::Instance().height / GRID_SIZE;
+	return { gridPosition.col * tileWidth, gridPosition.row * tileHeight };
+}
+
 void TileMap::RenderTile(Cell cell, TileType type)
 {
 	const int tileWidth = Game::Instance().width / GRID_SIZE;

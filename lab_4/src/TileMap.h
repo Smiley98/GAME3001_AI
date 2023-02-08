@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <glm/glm.hpp>
 
 enum TileType : int
 {
@@ -19,8 +20,9 @@ struct Cell
 constexpr int GRID_SIZE = 10;
 class TileMap
 {
-
 public:
+	Cell GridPosition(glm::vec2 pixelPosition);
+	glm::vec2 PixelPosition(Cell gridPosition);
 
 	void RenderTile(Cell cell, TileType type);
 	void Render();

@@ -18,24 +18,15 @@ PlayScene::~PlayScene()
 
 void PlayScene::Draw()
 {
-	DrawDisplayList();
-	if(m_bDebugView)
-	{
-		// Draw Collider Bounds for the Target
-		Util::DrawCircle(m_pTarget->GetTransform()->position, m_pTarget->GetWidth() * 0.5f);
-
-		if(m_pStarShip->IsEnabled())
-		{
-			Util::DrawRect(m_pStarShip->GetTransform()->position -
-				glm::vec2(m_pStarShip->GetWidth() * 0.5f, m_pStarShip->GetHeight() * 0.5f),
-				m_pStarShip->GetWidth(), m_pStarShip->GetHeight());
-
-			CollisionManager::RotateAABB(m_pStarShip, m_pStarShip->GetCurrentHeading());
-		}
-	}
-
 	m_Map.Render();
 
+	Util::DrawCircle(m_pTarget->GetTransform()->position, m_pTarget->GetWidth() * 0.5f);
+	m_Map.RenderTile(m_Map.GridPosition(m_pTarget->GetTransform()->position), MUD);
+
+	Util::DrawRect(m_pStarShip->GetTransform()->position - glm::vec2(m_pStarShip->GetWidth() * 0.5f, m_pStarShip->GetHeight() * 0.5f), m_pStarShip->GetWidth(), m_pStarShip->GetHeight());
+	//CollisionManager::RotateAABB(m_pStarShip, m_pStarShip->GetCurrentHeading());
+
+	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }
 
@@ -73,7 +64,6 @@ void PlayScene::Start()
 {
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
-	m_bDebugView = false; // turn off debug colliders
 
 	// Add the Target to the Scene
 	m_pTarget = new Target(); // instantiate an object of type Target
@@ -96,26 +86,18 @@ void PlayScene::Start()
 	ImGuiWindowFrame::Instance().SetGuiFunction(std::bind(&PlayScene::GUI_Function, this));
 }
 
+#include <glm/gtc/type_ptr.hpp>
 void PlayScene::GUI_Function()
 {
-	// Always open with a NewFrame
 	ImGui::NewFrame();
-
-	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
-	//ImGui::ShowDemoWindow();
-	
 	ImGui::Begin("GAME3001 - W2023 - Lab4", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
-	
 	ImGui::Separator();
-	
-	// Debug Properties
-	static bool toggleDebug = false;
-	if(ImGui::Checkbox("Toggle Debug View", &toggleDebug))
+
+	static glm::vec2 targetPosition;
+	if (ImGui::SliderFloat2("Target Position", glm::value_ptr(targetPosition), 0.0f, 800.0f))
 	{
-		m_bDebugView = toggleDebug;
+		m_pTarget->GetTransform()->position = targetPosition;
 	}
-	
-	ImGui::Separator();
-	
+
 	ImGui::End();
 }
