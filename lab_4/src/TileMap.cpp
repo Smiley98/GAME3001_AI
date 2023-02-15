@@ -28,15 +28,11 @@ void TileMap::Init(Scene* scene)
 			labelPosition.x += tileWidth * 0.5f;
 			labelPosition.y += tileHeight * 0.5f;
 
-			float g = Euclidean({ col, row }, end);
-			float h = Cost((TileType)m_tiles[row][col]);
-			std::string text = std::to_string(g + h);
-			text.resize(4);
-
-			Label* label = new Label("H: " + text, "Consolas", 12, {255, 0, 0, 255}, labelPosition);
+			Label* label = new Label("", "Consolas", 12, {255, 0, 0, 255}, labelPosition);
 			m_info[row][col].label = label;
 		}
 	}
+	UpdateScores();
 }
 
 void TileMap::RenderTile(Cell cell, glm::vec3 color)
@@ -84,6 +80,21 @@ void TileMap::Render()
 
 	RenderTile(start, { 0.5f, 0.0f, 1.0f });
 	RenderTile(end, { 1.0f, 0.0f, 1.0f });
+}
+
+void TileMap::UpdateScores()
+{
+	for (int row = 0; row < GRID_SIZE; row++)
+	{
+		for (int col = 0; col < GRID_SIZE; col++)
+		{
+			float g = distanceType == EUCLIDEAN ? Euclidean({ col, row }, end) : Manhattan({ col, row }, end);
+			float h = Cost((TileType)m_tiles[row][col]);
+			std::string text = std::to_string(g + h);
+			text.resize(4);
+			m_info[row][col].label->SetText("H: " + text);
+		}
+	}
 }
 
 float Manhattan(Cell a, Cell b)

@@ -101,5 +101,12 @@ void PlayScene::GUI_Function()
 		m_pTarget->GetTransform()->position = targetPosition;
 	}
 
+	static bool euclidean = true;
+	if (ImGui::Checkbox("Is Euclidean", &euclidean))
+	{
+		m_Map.distanceType = euclidean ? EUCLIDEAN : MANHATTAN;
+		m_Map.UpdateScores();
+	}
+
 	ImGui::End();
 }

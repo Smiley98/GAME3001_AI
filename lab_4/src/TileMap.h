@@ -12,6 +12,12 @@ enum TileType : int
 	COUNT
 };
 
+enum DistanceType
+{
+	MANHATTAN,
+	EUCLIDEAN
+};
+
 struct Cell
 {
 	int col; // x
@@ -40,8 +46,11 @@ public:
 	void RenderTile(Cell cell, TileType type);
 	void Render();
 
+	void UpdateScores();
+
 	Cell start{ 1, 8 };
 	Cell end{ 8, 1 };
+	DistanceType distanceType = EUCLIDEAN;
 
 private:
 	std::array<std::array<Tile, GRID_SIZE>, GRID_SIZE> m_info;
