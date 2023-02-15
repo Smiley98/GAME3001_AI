@@ -108,5 +108,19 @@ void PlayScene::GUI_Function()
 		m_Map.UpdateScores();
 	}
 
+	static Cell start = m_Map.start;
+	if (ImGui::SliderInt2("Start", (int*)&start, 0, GRID_SIZE - 1))
+	{
+		m_Map.start = start;
+		m_Map.UpdateScores();
+	}
+
+	static Cell end = m_Map.end;
+	if (ImGui::SliderInt2("End", (int*)&end, 0, GRID_SIZE - 1))
+	{
+		m_Map.end = end;
+		m_Map.UpdateScores();
+	}
+
 	ImGui::End();
 }
