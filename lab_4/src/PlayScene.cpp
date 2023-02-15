@@ -30,9 +30,13 @@ void PlayScene::Draw()
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
 }
 
+extern float total_time;
+
 void PlayScene::Update()
 {
 	UpdateDisplayList();
+	float t = cosf(total_time) * 0.5f + 0.5f;
+	m_pTarget->GetTransform()->position = m_Map.Lerp(m_Map.start, m_Map.end, t);
 }
 
 void PlayScene::Clean()

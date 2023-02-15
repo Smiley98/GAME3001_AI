@@ -16,6 +16,11 @@ glm::vec2 TileMap::PixelPosition(Cell gridPosition)
 	return { gridPosition.col * tileWidth, gridPosition.row * tileHeight };
 }
 
+glm::vec2 TileMap::Lerp(Cell a, Cell b, float t)
+{
+	return Util::Lerp(PixelPosition(a), PixelPosition(b), t);
+}
+
 void TileMap::Init(Scene* scene)
 {
 	const int tileWidth = Game::Instance().width / GRID_SIZE;

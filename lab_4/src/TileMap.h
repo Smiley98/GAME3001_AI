@@ -39,6 +39,7 @@ class TileMap
 public:
 	Cell GridPosition(glm::vec2 pixelPosition);	// "Quantization" -- pixels to nodes
 	glm::vec2 PixelPosition(Cell gridPosition);	// "Localization" -- nodes to pixels
+	glm::vec2 Lerp(Cell a, Cell b, float t);	// Interpolates between tile centres as pixels
 
 	void Init(Scene* scene);
 
