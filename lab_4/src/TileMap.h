@@ -17,6 +17,9 @@ struct Cell
 	int row; // y
 };
 
+float Manhattan(Cell a, Cell b);
+float Euclidean(Cell a, Cell b);
+
 constexpr int GRID_SIZE = 10;
 class TileMap
 {
@@ -24,8 +27,12 @@ public:
 	Cell GridPosition(glm::vec2 pixelPosition);	// "Quantization" -- pixels to nodes
 	glm::vec2 PixelPosition(Cell gridPosition);	// "Localization" -- nodes to pixels
 
+	void RenderTile(Cell cell, glm::vec3 color);
 	void RenderTile(Cell cell, TileType type);
 	void Render();
+
+	Cell start{ 1, 8 };
+	Cell end{ 8, 1 };
 
 private:
 	std::array<std::array<int, GRID_SIZE>, GRID_SIZE> m_tiles

@@ -16,33 +16,36 @@ glm::vec2 TileMap::PixelPosition(Cell gridPosition)
 	return { gridPosition.col * tileWidth, gridPosition.row * tileHeight };
 }
 
-void TileMap::RenderTile(Cell cell, TileType type)
+void TileMap::RenderTile(Cell cell, glm::vec3 color)
 {
 	const int tileWidth = Game::Instance().width / GRID_SIZE;
 	const int tileHeight = Game::Instance().height / GRID_SIZE;
 	glm::vec2 tilePosition{ cell.col * tileWidth, cell.row * tileHeight };
-	glm::vec4 tileColor;
+	Util::DrawFilledRect(tilePosition, tileWidth, tileHeight, glm::vec4(color, 1.0f));
+}
 
+void TileMap::RenderTile(Cell cell, TileType type)
+{
+	glm::vec3 tileColor;
 	switch (type)
 	{
 	case AIR:
-		tileColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+		tileColor = { 1.0f, 1.0f, 1.0f };
 		break;
 
 	case GRASS:
-		tileColor = { 0.0f, 1.0f, 0.0f, 1.0f };
+		tileColor = { 0.0f, 1.0f, 0.0f };
 		break;
 
 	case WATER:
-		tileColor = { 0.0f, 0.0f, 1.0f, 1.0f };
+		tileColor = { 0.0f, 0.0f, 1.0f };
 		break;
 
 	case MUD:
-		tileColor = { 0.5f, 0.15f, 0.25f, 1.0f };
+		tileColor = { 0.5f, 0.15f, 0.25f };
 		break;
 	}
-
-	Util::DrawFilledRect(tilePosition, tileWidth, tileHeight, tileColor);
+	RenderTile(cell, tileColor);
 }
 
 void TileMap::Render()
@@ -54,4 +57,19 @@ void TileMap::Render()
 			RenderTile({ col, row }, (TileType)m_tiles[row][col]);
 		}
 	}
+
+	RenderTile(start, { 0.5f, 0.0f, 1.0f });
+	RenderTile(end, { 1.0f, 0.0f, 1.0f });
+}
+
+float Manhattan(Cell a, Cell b)
+{
+	return abs(b.col - a.col) + abs(b.row - a.row);
+}
+
+float Euclidean(Cell a, Cell b)
+{
+	float dx = b.col - a.col;
+	float dy = b.row - a.row;
+	return sqrtf(dx * dx + dy * dy);
 }
