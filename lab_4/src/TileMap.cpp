@@ -4,8 +4,8 @@
 
 Cell TileMap::GridPosition(glm::vec2 pixelPosition)
 {
-	const int tileWidth = Game::Instance().width / GRID_SIZE;
-	const int tileHeight = Game::Instance().height / GRID_SIZE;
+	const int tileWidth = Game::Instance().width / GRID_SIZE;	// 80
+	const int tileHeight = Game::Instance().height / GRID_SIZE;	// 60
 	return { (int)pixelPosition.x / tileWidth, (int)pixelPosition.y / tileHeight };
 }
 

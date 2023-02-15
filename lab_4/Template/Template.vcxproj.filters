@@ -144,7 +144,9 @@
     <ClCompile Include="..\src\StarShip.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TileMap.cpp" />
+    <ClCompile Include="..\src\TileMap.cpp">
+      <Filter>Pathing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -306,7 +308,9 @@
     <ClInclude Include="..\src\TileStatus.h">
       <Filter>Enums</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TileMap.h" />
+    <ClInclude Include="..\src\TileMap.h">
+      <Filter>Pathing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">
