@@ -29,9 +29,11 @@ void TileMap::Init(Scene* scene)
 			labelPosition.y += tileHeight * 0.5f;
 
 			float g = Euclidean({ col, row }, end);
-			std::string text = std::to_string(g);
+			float h = Cost((TileType)m_tiles[row][col]);
+			std::string text = std::to_string(g + h);
 			text.resize(4);
-			Label* label = new Label("G: " + text, "Consolas", 12, {255, 0, 0, 255}, labelPosition);
+
+			Label* label = new Label("H: " + text, "Consolas", 12, {255, 0, 0, 255}, labelPosition);
 			m_info[row][col].label = label;
 		}
 	}
@@ -94,4 +96,16 @@ float Euclidean(Cell a, Cell b)
 	float dx = b.col - a.col;
 	float dy = b.row - a.row;
 	return sqrtf(dx * dx + dy * dy);
+}
+
+float Cost(TileType type)
+{
+	static std::array<float, COUNT> costs
+	{
+		0.0f,	// Air
+		10.0f,	// Grass
+		20.0f,	// Water
+		50.0f	// Mud
+	};
+	return costs[type];
 }

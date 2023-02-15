@@ -25,6 +25,7 @@ struct Tile
 
 float Manhattan(Cell a, Cell b);
 float Euclidean(Cell a, Cell b);
+float Cost(TileType type);
 
 constexpr int GRID_SIZE = 10;
 class TileMap
