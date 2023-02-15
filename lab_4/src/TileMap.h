@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <glm/glm.hpp>
+#include "Label.h"
 
 enum TileType : int
 {
@@ -17,6 +18,11 @@ struct Cell
 	int row; // y
 };
 
+struct Tile
+{
+	Label* label;
+};
+
 float Manhattan(Cell a, Cell b);
 float Euclidean(Cell a, Cell b);
 
@@ -27,6 +33,8 @@ public:
 	Cell GridPosition(glm::vec2 pixelPosition);	// "Quantization" -- pixels to nodes
 	glm::vec2 PixelPosition(Cell gridPosition);	// "Localization" -- nodes to pixels
 
+	void Init(Scene* scene);
+
 	void RenderTile(Cell cell, glm::vec3 color);
 	void RenderTile(Cell cell, TileType type);
 	void Render();
@@ -35,6 +43,7 @@ public:
 	Cell end{ 8, 1 };
 
 private:
+	std::array<std::array<Tile, GRID_SIZE>, GRID_SIZE> m_info;
 	std::array<std::array<int, GRID_SIZE>, GRID_SIZE> m_tiles
 	{
 		std::array<int, GRID_SIZE> { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },

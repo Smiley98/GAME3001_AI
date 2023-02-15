@@ -16,12 +16,32 @@ glm::vec2 TileMap::PixelPosition(Cell gridPosition)
 	return { gridPosition.col * tileWidth, gridPosition.row * tileHeight };
 }
 
+void TileMap::Init(Scene* scene)
+{
+	const int tileWidth = Game::Instance().width / GRID_SIZE;
+	const int tileHeight = Game::Instance().height / GRID_SIZE;
+	for (int row = 0; row < GRID_SIZE; row++)
+	{
+		for (int col = 0; col < GRID_SIZE; col++)
+		{
+			glm::vec2 labelPosition = PixelPosition({ col, row });
+			labelPosition.x += tileWidth * 0.5f;
+			labelPosition.y += tileHeight * 0.5f;
+
+			Label* text = new Label("test", "lazy", 20, { 255, 0, 0, 255 }, labelPosition);
+			m_info[row][col].label = text;
+			scene->AddChild(text);
+		}
+	}
+}
+
 void TileMap::RenderTile(Cell cell, glm::vec3 color)
 {
 	const int tileWidth = Game::Instance().width / GRID_SIZE;
 	const int tileHeight = Game::Instance().height / GRID_SIZE;
 	glm::vec2 tilePosition{ cell.col * tileWidth, cell.row * tileHeight };
 	Util::DrawFilledRect(tilePosition, tileWidth, tileHeight, glm::vec4(color, 1.0f));
+	//m_info[cell.row][cell.col].label->Draw();
 }
 
 void TileMap::RenderTile(Cell cell, TileType type)

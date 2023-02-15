@@ -78,6 +78,8 @@ void PlayScene::Start()
 	m_pStarShip->SetEnabled(false);
 	AddChild(m_pStarShip, 2);
 
+	m_Map.Init(this);
+
 	// Preload Sounds
 
 	SoundManager::Instance().Load("../Assets/Audio/yay.ogg", "yay", SoundType::SOUND_SFX);
