@@ -28,9 +28,11 @@ void TileMap::Init(Scene* scene)
 			labelPosition.x += tileWidth * 0.5f;
 			labelPosition.y += tileHeight * 0.5f;
 
-			Label* text = new Label("test", "lazy", 20, { 255, 0, 0, 255 }, labelPosition);
-			m_info[row][col].label = text;
-			scene->AddChild(text);
+			float g = Euclidean({ col, row }, end);
+			std::string text = std::to_string(g);
+			text.resize(4);
+			Label* label = new Label("G: " + text, "Consolas", 12, {255, 0, 0, 255}, labelPosition);
+			m_info[row][col].label = label;
 		}
 	}
 }
@@ -41,7 +43,7 @@ void TileMap::RenderTile(Cell cell, glm::vec3 color)
 	const int tileHeight = Game::Instance().height / GRID_SIZE;
 	glm::vec2 tilePosition{ cell.col * tileWidth, cell.row * tileHeight };
 	Util::DrawFilledRect(tilePosition, tileWidth, tileHeight, glm::vec4(color, 1.0f));
-	//m_info[cell.row][cell.col].label->Draw();
+	m_info[cell.row][cell.col].label->Draw();
 }
 
 void TileMap::RenderTile(Cell cell, TileType type)
