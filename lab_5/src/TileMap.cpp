@@ -138,11 +138,29 @@ Path TileMap::FindPath()
 			gNew = distanceType == EUCLIDEAN ? Euclidean(currentCell, neighbour) : Manhattan(currentCell, neighbour);
 			hNew = distanceType == EUCLIDEAN ? Euclidean(neighbour, end) : Manhattan(neighbour, end);
 			hNew += Cost((TileType)m_tiles[neighbour.row][neighbour.col]);
-		}
 
+			// Append if unvisited or best score
+			if (tileNodes[neighbourIndex].F() <= FLT_EPSILON || (gNew + hNew) < tileNodes[neighbourIndex].F())
+			{
+				openList.push({ neighbour, gNew, hNew });
+				tileNodes[neighbourIndex] = { neighbour, currentCell, gNew, hNew };
+			}
+		}
 	}
 
-	return Path();
+	Path path;
+	Cell currentCell = end;
+	int currentIndex = Index(currentCell);
+
+	while (!(tileNodes[currentIndex].parent == currentCell))
+	{
+		path.push_back(currentCell);
+		currentCell = tileNodes[currentIndex].parent;
+		currentIndex = Index(currentCell);
+	}
+	std::reverse(path.begin(), path.end());
+
+	return path;
 }
 
 std::vector<Cell> TileMap::Neighbours(Cell cell)

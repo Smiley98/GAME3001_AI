@@ -18,17 +18,21 @@ PlayScene::~PlayScene()
 
 void PlayScene::Draw()
 {
-	m_Map.Render();
+	m_map.Render();
 
 	// Target quantization
 	Util::DrawCircle(m_pTarget->GetTransform()->position, m_pTarget->GetWidth() * 0.5f);
-	Cell targetCell = m_Map.GridPosition(m_pTarget->GetTransform()->position);
-	m_Map.RenderTile(targetCell, MUD);
+	Cell targetCell = m_map.GridPosition(m_pTarget->GetTransform()->position);
+	m_map.RenderTile(targetCell, MUD);
 
 	// Neighbours render test
-	std::vector<Cell> neighbours = m_Map.Neighbours(m_Map.GridPosition(m_pTarget->GetTransform()->position));
-	for (const Cell& neighbour : neighbours)
-		m_Map.RenderTile(neighbour, GRASS);
+	//std::vector<Cell> neighbours = m_Map.Neighbours(m_Map.GridPosition(m_pTarget->GetTransform()->position));
+	//for (const Cell& neighbour : neighbours)
+	//	m_Map.RenderTile(neighbour, GRASS);
+
+	// A* test!!!
+	for (const Cell& cell : m_path)
+		m_map.RenderTile(cell, GRASS);
 
 	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
@@ -40,7 +44,7 @@ void PlayScene::Update()
 {
 	UpdateDisplayList();
 	float t = cosf(total_time) * 0.5f + 0.5f;
-	m_pTarget->GetTransform()->position = m_Map.Lerp(m_Map.start, m_Map.end, t);
+	m_pTarget->GetTransform()->position = m_map.Lerp(m_map.start, m_map.end, t);
 }
 
 void PlayScene::Clean()
@@ -86,7 +90,8 @@ void PlayScene::Start()
 	m_pStarShip->SetEnabled(false);
 	AddChild(m_pStarShip, 2);
 
-	m_Map.Init(this);
+	m_map.Init(this);
+	m_path = m_map.FindPath();
 
 	// Preload Sounds
 
@@ -112,22 +117,22 @@ void PlayScene::GUI_Function()
 	static bool euclidean = true;
 	if (ImGui::Checkbox("Is Euclidean", &euclidean))
 	{
-		m_Map.distanceType = euclidean ? EUCLIDEAN : MANHATTAN;
-		m_Map.UpdateScores();
+		m_map.distanceType = euclidean ? EUCLIDEAN : MANHATTAN;
+		m_map.UpdateScores();
 	}
 
-	static Cell start = m_Map.start;
+	static Cell start = m_map.start;
 	if (ImGui::SliderInt2("Start", (int*)&start, 0, GRID_SIZE - 1))
 	{
-		m_Map.start = start;
+		m_map.start = start;
 		//m_Map.UpdateScores();
 	}
 
-	static Cell end = m_Map.end;
+	static Cell end = m_map.end;
 	if (ImGui::SliderInt2("End", (int*)&end, 0, GRID_SIZE - 1))
 	{
-		m_Map.end = end;
-		m_Map.UpdateScores();
+		m_map.end = end;
+		m_map.UpdateScores();
 	}
 
 	ImGui::End();

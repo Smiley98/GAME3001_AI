@@ -24,7 +24,8 @@ private:
 	void GUI_Function();
 	std::string m_guiTitle;
 	glm::vec2 m_mousePosition;
-	TileMap m_Map;
+	TileMap m_map;
+	Path m_path;
 
 	// Game Objects for the Scene
 	Target* m_pTarget;
