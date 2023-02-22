@@ -32,7 +32,7 @@ void PlayScene::Draw()
 
 	// A* test!!!
 	for (const Cell& cell : m_path)
-		m_map.RenderTile(cell, GRASS);
+		m_map.RenderTile(cell, { 1.0f, 0.0f, 0.0f });
 
 	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);
@@ -108,12 +108,6 @@ void PlayScene::GUI_Function()
 	ImGui::Begin("GAME3001 - W2023 - Lab4", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
 	ImGui::Separator();
 
-	//static glm::vec2 targetPosition;
-	//if (ImGui::SliderFloat2("Target Position", glm::value_ptr(targetPosition), 0.0f, 800.0f))
-	//{
-	//	m_pTarget->GetTransform()->position = targetPosition;
-	//}
-
 	static bool euclidean = true;
 	if (ImGui::Checkbox("Is Euclidean", &euclidean))
 	{
@@ -125,14 +119,14 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderInt2("Start", (int*)&start, 0, GRID_SIZE - 1))
 	{
 		m_map.start = start;
-		//m_Map.UpdateScores();
+		m_path = m_map.FindPath();
 	}
 
 	static Cell end = m_map.end;
 	if (ImGui::SliderInt2("End", (int*)&end, 0, GRID_SIZE - 1))
 	{
 		m_map.end = end;
-		m_map.UpdateScores();
+		m_path = m_map.FindPath();
 	}
 
 	ImGui::End();
