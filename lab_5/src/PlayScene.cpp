@@ -20,11 +20,15 @@ void PlayScene::Draw()
 {
 	m_Map.Render();
 
+	// Target quantization
 	Util::DrawCircle(m_pTarget->GetTransform()->position, m_pTarget->GetWidth() * 0.5f);
-	m_Map.RenderTile(m_Map.GridPosition(m_pTarget->GetTransform()->position), MUD);
+	Cell targetCell = m_Map.GridPosition(m_pTarget->GetTransform()->position);
+	m_Map.RenderTile(targetCell, MUD);
 
-	//Util::DrawRect(m_pStarShip->GetTransform()->position - glm::vec2(m_pStarShip->GetWidth() * 0.5f, m_pStarShip->GetHeight() * 0.5f), m_pStarShip->GetWidth(), m_pStarShip->GetHeight());
-	//CollisionManager::RotateAABB(m_pStarShip, m_pStarShip->GetCurrentHeading());
+	// Neighbours render test
+	std::vector<Cell> neighbours = m_Map.Neighbours(m_Map.GridPosition(m_pTarget->GetTransform()->position));
+	for (const Cell& neighbour : neighbours)
+		m_Map.RenderTile(neighbour, GRASS);
 
 	DrawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance().GetRenderer(), 255, 255, 255, 255);

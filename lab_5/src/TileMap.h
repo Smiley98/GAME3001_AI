@@ -94,6 +94,7 @@ public:
 	void UpdateScores();
 
 	Path FindPath();
+	std::vector<Cell> Neighbours(Cell cell);
 
 	Cell start{ 1, 8 };
 	Cell end{ 8, 1 };

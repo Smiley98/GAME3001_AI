@@ -122,10 +122,30 @@ Path TileMap::FindPath()
 			break;
 		}
 
+		// Continue with A* by popping from the front of the queue and adding it to the close list so we don't re-visit it!
+		openList.pop();
+		closedList[Index(currentCell)] = true;
+
+
 
 	}
 
 	return Path();
+}
+
+std::vector<Cell> TileMap::Neighbours(Cell cell)
+{
+	std::vector<Cell> neighbours;
+	for (int row = cell.row - 1; row <= cell.row + 1 && row >= 0 && row < GRID_SIZE; row++)
+	{
+		for (int col = cell.col - 1; col <= cell.col + 1 && col >= 0 && col < GRID_SIZE; col++)
+		{
+			Cell neighbour{ col, row };
+			if (!(neighbour == cell))
+				neighbours.push_back(neighbour);
+		}
+	}
+	return neighbours;
 }
 
 float Manhattan(Cell a, Cell b)
