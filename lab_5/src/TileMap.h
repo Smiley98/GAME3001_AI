@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <vector>
 #include <glm/glm.hpp>
 #include "Label.h"
 
@@ -20,8 +21,46 @@ enum DistanceType
 
 struct Cell
 {
-	int col; // x
-	int row; // y
+	int col = - 1; // x
+	int row = - 1; // y
+};
+
+struct Node
+{
+	Node()
+	{
+		Init();
+	}
+
+	Node(Cell cell)
+	{
+		Init(cell);
+	}
+
+	Node(Cell cell, float g, float h)
+	{
+		Init(cell, {}, g, h);
+	}
+
+	Node(Cell cell, Cell parent, float g, float h)
+	{
+		Init(cell, parent, g, h);
+	}
+
+	void Init(Cell cell = {}, Cell parent = {}, float g = 0.0f, float h = 0.0f)
+	{
+		this->cell = cell;
+		this->parent = parent;
+		this->g = g;
+		this->h = h;
+	}
+
+	float F() const { return g + h; }
+
+	Cell cell;
+	Cell parent;
+	float g;
+	float h;
 };
 
 struct Tile
@@ -29,9 +68,12 @@ struct Tile
 	Label* label;
 };
 
+using Path = std::vector<Cell>;
+
 float Manhattan(Cell a, Cell b);
 float Euclidean(Cell a, Cell b);
 float Cost(TileType type);
+bool Compare(const Node& a, const Node& b);
 
 constexpr int GRID_SIZE = 10;
 class TileMap
@@ -40,6 +82,7 @@ public:
 	Cell GridPosition(glm::vec2 pixelPosition);	// "Quantization" -- pixels to nodes
 	glm::vec2 PixelPosition(Cell gridPosition);	// "Localization" -- nodes to pixels
 	glm::vec2 Lerp(Cell a, Cell b, float t);	// Interpolates between tile centres as pixels
+	int Index(Cell cell) { return cell.row * GRID_SIZE + cell.col; }
 
 	void Init(Scene* scene);
 
@@ -48,6 +91,8 @@ public:
 	void Render();
 
 	void UpdateScores();
+
+	Path FindPath();
 
 	Cell start{ 1, 8 };
 	Cell end{ 8, 1 };

@@ -23,7 +23,7 @@ void PlayScene::Draw()
 	Util::DrawCircle(m_pTarget->GetTransform()->position, m_pTarget->GetWidth() * 0.5f);
 	m_Map.RenderTile(m_Map.GridPosition(m_pTarget->GetTransform()->position), MUD);
 
-	Util::DrawRect(m_pStarShip->GetTransform()->position - glm::vec2(m_pStarShip->GetWidth() * 0.5f, m_pStarShip->GetHeight() * 0.5f), m_pStarShip->GetWidth(), m_pStarShip->GetHeight());
+	//Util::DrawRect(m_pStarShip->GetTransform()->position - glm::vec2(m_pStarShip->GetWidth() * 0.5f, m_pStarShip->GetHeight() * 0.5f), m_pStarShip->GetWidth(), m_pStarShip->GetHeight());
 	//CollisionManager::RotateAABB(m_pStarShip, m_pStarShip->GetCurrentHeading());
 
 	DrawDisplayList();
@@ -99,11 +99,11 @@ void PlayScene::GUI_Function()
 	ImGui::Begin("GAME3001 - W2023 - Lab4", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
 	ImGui::Separator();
 
-	static glm::vec2 targetPosition;
-	if (ImGui::SliderFloat2("Target Position", glm::value_ptr(targetPosition), 0.0f, 800.0f))
-	{
-		m_pTarget->GetTransform()->position = targetPosition;
-	}
+	//static glm::vec2 targetPosition;
+	//if (ImGui::SliderFloat2("Target Position", glm::value_ptr(targetPosition), 0.0f, 800.0f))
+	//{
+	//	m_pTarget->GetTransform()->position = targetPosition;
+	//}
 
 	static bool euclidean = true;
 	if (ImGui::Checkbox("Is Euclidean", &euclidean))
@@ -116,7 +116,7 @@ void PlayScene::GUI_Function()
 	if (ImGui::SliderInt2("Start", (int*)&start, 0, GRID_SIZE - 1))
 	{
 		m_Map.start = start;
-		m_Map.UpdateScores();
+		//m_Map.UpdateScores();
 	}
 
 	static Cell end = m_Map.end;

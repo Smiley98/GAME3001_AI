@@ -1,6 +1,7 @@
 #include "TileMap.h"
 #include "Game.h"
 #include "Util.h"
+#include <queue>
 
 Cell TileMap::GridPosition(glm::vec2 pixelPosition)
 {
@@ -102,6 +103,20 @@ void TileMap::UpdateScores()
 	}
 }
 
+Path TileMap::FindPath()
+{
+	const int tileCount = GRID_SIZE * GRID_SIZE;
+	std::vector<Node> tileNodes(tileCount);
+	std::priority_queue<Node, std::vector<Node>, decltype(&Compare)> openList(Compare);
+	std::vector<bool> closedList(tileCount, false);
+	tileNodes[Index(start)].parent = start;
+	openList.push({ start });
+
+
+
+	return Path();
+}
+
 float Manhattan(Cell a, Cell b)
 {
 	return abs(b.col - a.col) + abs(b.row - a.row);
@@ -124,4 +139,9 @@ float Cost(TileType type)
 		50.0f	// Mud
 	};
 	return costs[type];
+}
+
+bool Compare(const Node& a, const Node& b)
+{
+	return a.F() > b.F();
 }
