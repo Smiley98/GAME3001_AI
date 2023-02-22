@@ -74,6 +74,7 @@ float Manhattan(Cell a, Cell b);
 float Euclidean(Cell a, Cell b);
 float Cost(TileType type);
 bool Compare(const Node& a, const Node& b);
+bool operator==(const Cell& a, const Cell& b);
 
 constexpr int GRID_SIZE = 10;
 class TileMap

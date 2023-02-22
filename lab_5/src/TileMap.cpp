@@ -112,7 +112,18 @@ Path TileMap::FindPath()
 	tileNodes[Index(start)].parent = start;
 	openList.push({ start });
 
+	while (!openList.empty())
+	{
+		const Cell currentCell = openList.top().cell;
 
+		// End condition (destination reached)
+		if (currentCell == end)
+		{
+			break;
+		}
+
+
+	}
 
 	return Path();
 }
@@ -144,4 +155,9 @@ float Cost(TileType type)
 bool Compare(const Node& a, const Node& b)
 {
 	return a.F() > b.F();
+}
+
+bool operator==(const Cell& a, const Cell& b)
+{
+	return a.row == b.row && a.col == b.col;
 }
