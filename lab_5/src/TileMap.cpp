@@ -126,7 +126,19 @@ Path TileMap::FindPath()
 		openList.pop();
 		closedList[Index(currentCell)] = true;
 
+		float gNew, hNew;
+		for (const Cell& neighbour : Neighbours(currentCell))
+		{
+			const int neighbourIndex = Index(neighbour);
 
+			// Skip if already visited
+			if (closedList[neighbourIndex])
+				continue;
+
+			gNew = distanceType == EUCLIDEAN ? Euclidean(currentCell, neighbour) : Manhattan(currentCell, neighbour);
+			hNew = distanceType == EUCLIDEAN ? Euclidean(neighbour, end) : Manhattan(neighbour, end);
+			hNew += Cost((TileType)m_tiles[neighbour.row][neighbour.col]);
+		}
 
 	}
 
