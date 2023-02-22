@@ -152,6 +152,9 @@ Path TileMap::FindPath()
 	Cell currentCell = end;
 	int currentIndex = Index(currentCell);
 
+	if (tileNodes[currentIndex].parent == Cell{ -1, -1 })
+		return {};
+
 	while (!(tileNodes[currentIndex].parent == currentCell))
 	{
 		path.push_back(currentCell);
