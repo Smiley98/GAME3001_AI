@@ -169,15 +169,25 @@ Path TileMap::FindPath()
 std::vector<Cell> TileMap::Neighbours(Cell cell)
 {
 	std::vector<Cell> neighbours;
-	for (int row = cell.row - 1; row <= cell.row + 1 && row >= 0 && row < GRID_SIZE; row++)
-	{
-		for (int col = cell.col - 1; col <= cell.col + 1 && col >= 0 && col < GRID_SIZE; col++)
-		{
-			Cell neighbour{ col, row };
-			if (!(neighbour == cell))
-				neighbours.push_back(neighbour);
-		}
-	}
+
+	// directional validity
+	bool top = cell.row - 1 >= 0;
+	bool bot = cell.row + 1 < GRID_SIZE;
+	bool left = cell.col - 1 >= 0;
+	bool right = cell.col + 1 < GRID_SIZE;
+
+	// horizontals and verticals
+	if (top) neighbours.push_back({ cell.col, cell.row - 1 });
+	if (bot) neighbours.push_back({ cell.col, cell.row + 1 });
+	if (left) neighbours.push_back({ cell.col - 1, cell.row });
+	if (right) neighbours.push_back({ cell.col + 1, cell.row });
+
+	// diagonals
+	if (top && left) neighbours.push_back({ cell.col - 1, cell.row - 1 });
+	if (top && right) neighbours.push_back({ cell.col + 1, cell.row - 1 });
+	if (bot && left) neighbours.push_back({ cell.col - 1, cell.row + 1 });
+	if (bot && right) neighbours.push_back({ cell.col + 1, cell.row + 1 });
+
 	return neighbours;
 }
 
