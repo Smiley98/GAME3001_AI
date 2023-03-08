@@ -90,9 +90,10 @@ void PlayScene::GUI_Function()
 	ImGui::Separator();
 
 	static bool toggle_grid = false;
-	if(ImGui::Checkbox("Toggle Grid", &toggle_grid))
+	if (ImGui::Checkbox("Toggle Grid", &toggle_grid))
 	{
-		
+		ToggleGrid(toggle_grid);
+		m_isGridEnabled = toggle_grid;
 	}
 
 	ImGui::Separator();
