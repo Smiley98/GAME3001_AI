@@ -27,6 +27,7 @@ void PlayScene::Draw()
 void PlayScene::Update()
 {
 	UpdateDisplayList();
+	CheckShipLOS(m_pTarget);
 }
 
 void PlayScene::Clean()
@@ -89,11 +90,52 @@ void PlayScene::GUI_Function()
 	ImGui::Begin("GAME3001 - W2023 - Lab 6.1", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
 	ImGui::Separator();
 
-	static bool toggle_grid = false;
-	if (ImGui::Checkbox("Toggle Grid", &toggle_grid))
+	if (ImGui::Checkbox("Toggle Grid", &m_isGridEnabled))
 	{
-		ToggleGrid(toggle_grid);
-		m_isGridEnabled = toggle_grid;
+		ToggleGrid(m_isGridEnabled);
+	}
+
+	// StarShip Properties
+	static int shipPosition[] = { static_cast<int>(m_pStarShip->GetTransform()->position.x),
+		static_cast<int>(m_pStarShip->GetTransform()->position.y) };
+	if (ImGui::SliderInt2("Ship Position", shipPosition, 0, 800))
+	{
+		m_pStarShip->GetTransform()->position.x = static_cast<float>(shipPosition[0]);
+		m_pStarShip->GetTransform()->position.y = static_cast<float>(shipPosition[1]);
+	}
+
+	// allow the ship to rotate
+	static int angle;
+	if (ImGui::SliderInt("Ship Direction", &angle, -360, 360))
+	{
+		m_pStarShip->SetCurrentHeading(static_cast<float>(angle));
+	}
+
+	ImGui::Separator();
+
+	// Target Properties
+	static int targetPosition[] = { static_cast<int>(m_pTarget->GetTransform()->position.x),
+		static_cast<int>(m_pTarget->GetTransform()->position.y) };
+	if (ImGui::SliderInt2("Target Position", targetPosition, 0, 800))
+	{
+		m_pTarget->GetTransform()->position.x = static_cast<float>(targetPosition[0]);
+		m_pTarget->GetTransform()->position.y = static_cast<float>(targetPosition[1]);
+	}
+
+	ImGui::Separator();
+
+	// Add Obstacle position control for each obstacle
+	for (unsigned i = 0; i < m_pObstacles.size(); ++i)
+	{
+		int obstaclePosition[] = { static_cast<int>(m_pObstacles[i]->GetTransform()->position.x),
+		static_cast<int>(m_pObstacles[i]->GetTransform()->position.y) };
+		std::string label = "Obstacle" + std::to_string(i + 1) + " Position";
+		if (ImGui::SliderInt2(label.c_str(), obstaclePosition, 0, 800))
+		{
+			m_pObstacles[i]->GetTransform()->position.x = static_cast<float>(obstaclePosition[0]);
+			m_pObstacles[i]->GetTransform()->position.y = static_cast<float>(obstaclePosition[1]);
+			BuildGrid();
+		}
 	}
 
 	ImGui::Separator();
@@ -106,6 +148,35 @@ void PlayScene::BuildObstaclePool()
 	{
 		m_pObstacles.push_back(new Obstacle);
 		AddChild(m_pObstacles[i]);
+	}
+}
+
+void PlayScene::CheckShipLOS(DisplayObject* object)
+{
+	m_pStarShip->SetHasLOS(false);
+
+	float range = Util::GetClosestEdge(m_pStarShip->GetTransform()->position, object);
+	if (range <= m_pStarShip->GetLOSDistance())
+	{
+		std::vector<DisplayObject*> contacts;
+		for (DisplayObject* contact : GetDisplayList())
+		{
+			if (contact->GetType() == GameObjectType::PATH_NODE) continue;
+			if (contact->GetType() != m_pStarShip->GetType() && contact->GetType() != object->GetType())
+			{
+				float contactRange = Util::GetClosestEdge(m_pStarShip->GetTransform()->position, contact);
+				if (contactRange <= range)
+				{
+					contacts.push_back(contact);
+				}
+			}
+		}
+
+		bool hasLOS = CollisionManager::LOSCheck(m_pStarShip,
+			m_pStarShip->GetTransform()->position + m_pStarShip->GetCurrentDirection() * m_pStarShip->GetLOSDistance(),
+			contacts, object);
+		m_pStarShip->SetHasLOS(hasLOS);
+		m_pStarShip->SetLOSColour(hasLOS ? glm::vec4{0.0f, 1.0f, 0.0f, 1.0f} : glm::vec4{1.0f, 0.0f, 0.0f, 1.0f});
 	}
 }
 

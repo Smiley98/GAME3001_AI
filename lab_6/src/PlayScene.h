@@ -31,6 +31,7 @@ private:
 	StarShip* m_pStarShip;
 	std::vector<Obstacle*> m_pObstacles;
 	void BuildObstaclePool();
+	void CheckShipLOS(DisplayObject* object);
 
 	// Path Nodes
 	std::vector<PathNode*> m_pGrid;
