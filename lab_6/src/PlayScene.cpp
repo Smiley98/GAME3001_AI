@@ -79,6 +79,8 @@ void PlayScene::Start()
 	m_pObstacles[1]->SetWidth(100);
 
 	m_pObstacles[2]->GetTransform()->position = { 380.0f, 480.0f };
+
+	BuildGrid();
 }
 
 void PlayScene::GUI_Function()
@@ -104,4 +106,37 @@ void PlayScene::BuildObstaclePool()
 		m_pObstacles.push_back(new Obstacle);
 		AddChild(m_pObstacles[i]);
 	}
+}
+
+void PlayScene::ToggleGrid(bool isVisible)
+{
+	for (PathNode* node : m_pGrid)
+	{
+		node->SetVisible(isVisible);
+	}
+}
+
+void PlayScene::BuildGrid()
+{
+	// Ensure we've destroyed the previous grid before building a new grid
+	ClearNodes();
+
+	const int tileSize = Config::TILE_SIZE;
+	const int tileOffset = tileSize * 0.5;
+
+	for (int row = 0; row < Config::ROW_NUM; row++)
+	{
+		for (int col = 0; col < Config::COL_NUM; col++)
+		{
+			PathNode* node = new PathNode;
+			node->GetTransform()->position = { col * tileSize + tileOffset, row * tileSize + tileOffset };
+			AddChild(node);
+		}
+	}
+}
+
+void PlayScene::ClearNodes()
+{
+	m_pGrid.clear();
+
 }

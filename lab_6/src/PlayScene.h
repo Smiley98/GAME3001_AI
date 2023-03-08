@@ -6,6 +6,7 @@
 #include "Target.h"
 #include "StarShip.h"
 #include "Obstacle.h"
+#include "PathNode.h"
 
 class PlayScene : public Scene
 {
@@ -31,8 +32,14 @@ private:
 	std::vector<Obstacle*> m_pObstacles;
 	void BuildObstaclePool();
 
+	// Path Nodes
+	std::vector<PathNode*> m_pGrid;
+	void BuildGrid();
+	void ClearNodes();
+	void ToggleGrid(bool isVisible);
+
 	// Debugging Variables
-	bool m_bDebugView;
+	bool m_isGridEnabled;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

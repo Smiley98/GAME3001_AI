@@ -3,6 +3,7 @@
 class PathNode :
     public Agent
 {
+public:
     PathNode();
     ~PathNode() = default;
 
