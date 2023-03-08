@@ -69,6 +69,16 @@ void PlayScene::Start()
 	m_pStarShip = new StarShip();
 	m_pStarShip->GetTransform()->position = { 150.0f, 300.0f };
 	AddChild(m_pStarShip);
+
+	BuildObstaclePool();
+
+	m_pObstacles[0]->GetTransform()->position = { 380.0f, 80.0f };
+	m_pObstacles[0]->SetHeight(50);
+
+	m_pObstacles[1]->GetTransform()->position = { 380.0f, 280.0f };
+	m_pObstacles[1]->SetWidth(100);
+
+	m_pObstacles[2]->GetTransform()->position = { 380.0f, 480.0f };
 }
 
 void PlayScene::GUI_Function()
@@ -85,4 +95,13 @@ void PlayScene::GUI_Function()
 
 	ImGui::Separator();
 	ImGui::End();
+}
+
+void PlayScene::BuildObstaclePool()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		m_pObstacles.push_back(new Obstacle);
+		AddChild(m_pObstacles[i]);
+	}
 }
