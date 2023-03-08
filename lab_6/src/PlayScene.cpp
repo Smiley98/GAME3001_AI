@@ -130,13 +130,34 @@ void PlayScene::BuildGrid()
 		{
 			PathNode* node = new PathNode;
 			node->GetTransform()->position = { col * tileSize + tileOffset, row * tileSize + tileOffset };
-			AddChild(node);
+
+			bool keep = true;
+			for (Obstacle* obstacle : m_pObstacles)
+			{
+				if (CollisionManager::AABBCheck(node, obstacle))
+				{
+					keep = false;
+				}
+			}
+			if (keep)
+			{
+				AddChild(node);
+				m_pGrid.push_back(node);
+			}
+			else
+			{
+				delete node;
+			}
 		}
 	}
+	ToggleGrid(m_isGridEnabled);
 }
 
 void PlayScene::ClearNodes()
 {
+	for (PathNode* node : m_pGrid)
+	{
+		RemoveChild(node);
+	}
 	m_pGrid.clear();
-
 }
