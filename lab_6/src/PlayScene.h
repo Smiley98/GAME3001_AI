@@ -6,7 +6,6 @@
 #include "Target.h"
 #include "StarShip.h"
 
-
 class PlayScene : public Scene
 {
 public:
@@ -31,8 +30,6 @@ private:
 
 	// Debugging Variables
 	bool m_bDebugView;
-
-
 };
 
 #endif /* defined (__PLAY_SCENE__) */

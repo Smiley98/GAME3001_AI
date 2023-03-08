@@ -74,7 +74,6 @@ private:
 	glm::vec4 m_lineColour[5];
 	bool m_collisionWhiskers[5];
 	float m_whiskerAngle;
-
 };
 
 

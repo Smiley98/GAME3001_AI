@@ -30,6 +30,7 @@ public:
 
 	// public functions
 	void Seek();
+	void Reset();
 	void LookWhereYoureGoing(glm::vec2 target_direction);
 
 private:
@@ -40,6 +41,7 @@ private:
 
 	// where we want to go
 	glm::vec2 m_desiredVelocity;
+	glm::vec2 m_startPosition;
 
 	// private function
 	void m_move();

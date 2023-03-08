@@ -56,39 +56,33 @@ void PlayScene::HandleEvents()
 
 void PlayScene::Start()
 {
-	// Set GUI Title
 	m_guiTitle = "Play Scene";
-
-	// Preload Sounds
 
 	SoundManager::Instance().Load("../Assets/Audio/yay.ogg", "yay", SoundType::SOUND_SFX);
 	SoundManager::Instance().Load("../Assets/Audio/thunder.ogg", "thunder", SoundType::SOUND_SFX);
-
 	ImGuiWindowFrame::Instance().SetGuiFunction(std::bind(&PlayScene::GUI_Function, this));
+
+	m_pTarget = new Target();
+	m_pTarget->GetTransform()->position = { 600.0f, 300.0f };
+	AddChild(m_pTarget);
+
+	m_pStarShip = new StarShip();
+	m_pStarShip->GetTransform()->position = { 150.0f, 300.0f };
+	AddChild(m_pStarShip);
 }
 
 void PlayScene::GUI_Function()
 {
-	// Always open with a NewFrame
 	ImGui::NewFrame();
-
-	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
-	//ImGui::ShowDemoWindow();
-	
 	ImGui::Begin("GAME3001 - W2023 - Lab 6.1", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
-
 	ImGui::Separator();
 
-	// Debug Properties
 	static bool toggle_grid = false;
 	if(ImGui::Checkbox("Toggle Grid", &toggle_grid))
 	{
-	
+		
 	}
 
 	ImGui::Separator();
-
-	
-
 	ImGui::End();
 }

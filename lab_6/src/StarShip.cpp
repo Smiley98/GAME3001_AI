@@ -4,10 +4,9 @@
 #include "TextureManager.h"
 #include "Util.h"
 
-StarShip::StarShip()
+StarShip::StarShip() : m_maxSpeed(20.0f), m_turnRate(5.0f), m_accelerationRate(2.0f), m_startPosition({ 300.0f, 500.0f })
 {
 	TextureManager::Instance().Load("../Assets/textures/ncl_small.png", "starship");
-
 	const auto size = TextureManager::Instance().GetTextureSize("starship");
 	SetWidth(static_cast<int>(size.x));
 	SetHeight(static_cast<int>(size.y));
@@ -19,15 +18,10 @@ StarShip::StarShip()
 	setIsCentered(true);
 	SetType(GameObjectType::AGENT);
 
-	// Starting Motion Properties
-	m_maxSpeed = 20.0f; // a maximum number of pixels moved per frame
-	m_turnRate = 5.0f; // a maximum number of degrees to turn each time-step
-	m_accelerationRate = 4.0f; // a maximum number of pixels to add to the velocity each frame
-
-	SetCurrentDirection(glm::vec2(1.0f, 0.0f)); // Facing Right
-
-	SetLOSDistance(300.0f);
-
+	SetCurrentHeading(0.0f);
+	SetLOSDistance(400.0f);
+	SetWhiskerAngle(45.0f);
+	SetLOSColour({ 1.0f, 0.0f, 0.0f, 1.0f });
 }
 
 StarShip::~StarShip()
@@ -35,9 +29,11 @@ StarShip::~StarShip()
 
 void StarShip::Draw()
 {
-	// draw the target
-	TextureManager::Instance().Draw("starship", 
-		GetTransform()->position, static_cast<double>(GetCurrentHeading()), 255, true);
+	// draw the starship
+	TextureManager::Instance().Draw("starship", GetTransform()->position, static_cast<double>(GetCurrentHeading()), 255, isCentered());
+
+	// draw the sight line
+	Util::DrawLine(GetTransform()->position, GetTransform()->position + GetCurrentDirection() * GetLOSDistance(), GetLOSColour());
 }
 
 void StarShip::Update()
@@ -100,6 +96,11 @@ void StarShip::Seek()
 		LookWhereYoureGoing(steering_direction);
 
 		GetRigidBody()->acceleration = GetCurrentDirection() * GetAccelerationRate();
+}
+
+void StarShip::Reset()
+{
+	GetTransform()->position = m_startPosition;
 }
 
 void StarShip::LookWhereYoureGoing(const glm::vec2 target_direction)
